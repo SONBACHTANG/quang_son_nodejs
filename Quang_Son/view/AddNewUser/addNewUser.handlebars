@@ -1,0 +1,96 @@
+<div class="container" style="margin-top:60px;">
+  <div class="row">
+    <div class="col-md"></div>
+    <div class="col-md">
+
+    <form id = "myForm">
+
+      <!-- Name input -->
+
+      <div class="form-outline mb-4">
+        <input class="form-control" id="firstname" />
+        <label class="form-label" for="registerName">FirstName</label>
+      </div>
+
+      <!-- Username input -->
+      <div class="form-outline mb-4">
+        <input class="form-control" id="lastname" id="lastname" />
+        <label class="form-label" for="registerUsername">LastName</label>
+      </div>
+
+      <!-- Email input -->
+      <div class="form-outline mb-4">
+        <input class="form-control" id="mobile"/>
+        <label class="form-label" for="registerMobile">Mobile Number</label>
+      </div>
+
+      <!-- Password input -->
+      <div class="form-outline mb-4">
+        <input class="form-control" id="username"/>
+        <label class="form-label" for="registerPassword">User Name</label>
+      </div>
+
+      <!-- Repeat Password input -->
+      <div class="form-outline mb-4">
+        <input type="password" class="form-control" id="password"/>
+        <label class="form-label" for="registerRepeatPassword">Password</label>
+      </div>
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>
+    </form>
+
+</div>
+<div class="col-md"></div>
+</div>
+</div>
+
+<script>
+  const myForm = document.getElementById('myForm');
+  const firstname = document.getElementById('firstname');
+  const lastname = document.getElementById('lastname');
+  const mobile = document.getElementById('mobile');
+  const username = document.getElementById('username');
+  const password = document.getElementById('password');
+
+myForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  if (firstname.value.trim() === '' ||
+      lastname.value.trim() === '' ||
+      mobile.value.trim() === '' ||
+      username.value.trim() === '' ||
+      password.value.trim() === '') {
+    alert('Vui lòng điền đầy đủ thông tin.');
+    return;
+  }
+
+  // Gọi hàm fetch API
+  await fetch('http://localhost:3000/users/createUser/', {
+    method: 'POST',
+    body: JSON.stringify({
+      firstname: firstname.value,
+      lastname: lastname.value,
+      mobile: mobile.value,
+      username: username.value,
+      password: password.value,
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then( response => response.json())
+  .then(response => {
+    if(response.message == "Tạo tài khoản thành công")
+    {
+      // Chuyển hướng trang web của bạn sang một trang khác
+      window.location.replace('http://localhost:3000/allUsersList');
+    }
+    else{
+      alert(response.message)
+    }
+
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+});
+</script>
